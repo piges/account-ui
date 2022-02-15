@@ -1,0 +1,17 @@
+<div id="wrapper" fxLayout="column" fxLayoutAlign="center center">
+	
+	<p-card>
+		<div fxLayout="row" fxLayoutAlign="center center">
+			<p class="h4 mb-4">Login</p>
+		</div>
+		
+		<form [formGroup]="loginFormGroup" (ngSubmit)="loginSubmit()" fxLayout="column" fxLayoutGap="10px">
+			<input type="text" pInputText formControlName="email" placeholder="email">
+
+			<div fxLayout="row" fxLayoutAlign="end end">
+				<p-button type="submit" label="Login"></p-button>
+			</div>
+		</form>
+	</p-card>
+
+</div>
