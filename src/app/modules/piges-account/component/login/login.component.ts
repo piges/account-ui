@@ -14,6 +14,10 @@ export class LoginComponent implements OnInit {
 	) { }
 
 	loginFormGroup!: FormGroup;
+	boxToShow: number = 1;
+	identities: any[] = [];
+	error: any;
+	
 
 	ngOnInit(): void {
 		this.loginFormGroup = this._formBuilder.group({
@@ -27,15 +31,27 @@ export class LoginComponent implements OnInit {
 			return;
 		}
 
-		let identity;
 		try {
-			identity = await this.pigesAuthService.getIdentityProvider(this.loginFormGroup.value.email);
-		} catch (e) {
+			let response;
+			response = await this.pigesAuthService.getIdentityProvider(this.loginFormGroup.value.email);
+			
+			if(response.redirectUrl !== undefined) {
+				// fai redirect a response.redirectUrl
+				return;
+			}
+
+			this.identities = response;
+			this.boxToShow = 2;
+		} catch (e: any) {
+			this.error = e.error;
+			this.boxToShow = -1;
 			console.log(e);
 		}
 
-		console.log(identity);
 	}
 
+	redirectToAuthorizationUrl(identifier: string) {
+		console.log(identifier);
+	}
 
 }

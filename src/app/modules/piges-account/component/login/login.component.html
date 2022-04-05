@@ -1,17 +1,29 @@
 <div id="wrapper" fxLayout="column" fxLayoutAlign="center center">
-	
+
 	<p-card>
 		<div fxLayout="row" fxLayoutAlign="center center">
 			<p class="h4 mb-4">Login</p>
 		</div>
 		
-		<form [formGroup]="loginFormGroup" (ngSubmit)="loginSubmit()" fxLayout="column" fxLayoutGap="10px">
-			<input type="text" pInputText formControlName="email" placeholder="email">
+		<div [ngSwitch]="boxToShow">
+			<div *ngSwitchDefault>
+				<form [formGroup]="loginFormGroup" (ngSubmit)="loginSubmit()" fxLayout="column" fxLayoutGap="10px">
+					<input type="text" pInputText formControlName="email" placeholder="email">
 
-			<div fxLayout="row" fxLayoutAlign="end end">
-				<p-button type="submit" label="Login"></p-button>
+					<div fxLayout="row" fxLayoutAlign="end end">
+						<p-button type="submit" label="Login"></p-button>
+					</div>
+				</form>
 			</div>
-		</form>
+			<div *ngSwitchCase="2" fxLayout="column" fxLayoutGap="4px" fxLayoutAlign="center center">
+				<p-button *ngFor="let identity of identities" (onClick)="redirectToAuthorizationUrl(identity.identifier)">{{ identity.name }}</p-button>
+				<p-button (onClick)="boxToShow = 1" label="Indietro"></p-button>
+			</div>
+			<div *ngSwitchCase="-1" fxLayout="column" fxLayoutGap="4px" fxLayoutAlign="center center">
+				<span>ERRORE: {{ error.error }}</span>
+				<p-button (onClick)="boxToShow = 1" label="Indietro"></p-button>
+			</div>
+		</div>
 	</p-card>
 
 </div>
