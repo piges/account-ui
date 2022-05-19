@@ -1,21 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
-
-import { from, Observable, of } from 'rxjs';
+import { APP_URL } from 'src/app/app.constants';
 
 
 @Injectable({
   providedIn: 'root',
 })
-export class PigesAuthService {
+export class PigesAccountAuthService {
 
 	constructor(
 		private http: HttpClient,
 		private recaptchaV3Service: ReCaptchaV3Service,
 	) { }
   
-	private configUrl = 'https://account.piges.io/api/login';
+	private configUrl = APP_URL + '/api/login';
 
 	async getIdentityProvider(email: string) {
 		let token = await this.recaptchaV3Service.execute('login').toPromise();

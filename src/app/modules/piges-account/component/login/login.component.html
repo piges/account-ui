@@ -16,7 +16,7 @@
 				</form>
 			</div>
 			<div *ngSwitchCase="2" fxLayout="column" fxLayoutGap="4px" fxLayoutAlign="center center">
-				<p-button *ngFor="let identity of identities" (onClick)="redirectToAuthorizationUrl(identity.identifier)">{{ identity.name }}</p-button>
+				<p-button *ngFor="let identity of identities" (onClick)="redirectToAuthorizationUrl(identity)">{{ identity.name }}</p-button>
 				<p-button (onClick)="boxToShow = 1" label="Indietro"></p-button>
 			</div>
 			<div *ngSwitchCase="-1" fxLayout="column" fxLayoutGap="4px" fxLayoutAlign="center center">

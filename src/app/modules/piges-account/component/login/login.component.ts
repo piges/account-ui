@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PigesAuthService } from '../../service/piges-auth.service';
+import { PigesAccountAuthService } from '../../service/piges-account-auth.service';
 
 @Component({
 	selector: 'login-component',
@@ -10,7 +11,8 @@ import { PigesAuthService } from '../../service/piges-auth.service';
 export class LoginComponent implements OnInit {
 	constructor(
 		private _formBuilder: FormBuilder,
-		private pigesAuthService: PigesAuthService,
+		private pigesAccountAuthService: PigesAccountAuthService,
+		@Inject(DOCUMENT) private document: Document
 	) { }
 
 	loginFormGroup!: FormGroup;
@@ -32,11 +34,15 @@ export class LoginComponent implements OnInit {
 		}
 
 		try {
-			let response;
-			response = await this.pigesAuthService.getIdentityProvider(this.loginFormGroup.value.email);
+			let response: any[];
+			response = await this.pigesAccountAuthService.getIdentityProvider(this.loginFormGroup.value.email);
 			
-			if(response.redirectUrl !== undefined) {
-				// fai redirect a response.redirectUrl
+			if(response.length == 0) {
+				throw "Errore anomalo!"
+			}
+
+			if(response.length < 2) {
+				this.document.location.href = response[0].authorizeUrl;
 				return;
 			}
 
@@ -45,13 +51,12 @@ export class LoginComponent implements OnInit {
 		} catch (e: any) {
 			this.error = e.error;
 			this.boxToShow = -1;
-			console.log(e);
 		}
 
 	}
 
-	redirectToAuthorizationUrl(identifier: string) {
-		console.log(identifier);
+	redirectToAuthorizationUrl(identifier: any) {
+		this.document.location.href = identifier.authorizeUrl;
 	}
 
 }

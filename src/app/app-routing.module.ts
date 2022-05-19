@@ -4,14 +4,19 @@ import { HomePageComponent } from './modules/piges-account/component/home-page/h
 import { LoginComponent } from './modules/piges-account/component/login/login.component';
 
 const routes: Routes = [
-	{
+    {
 		path: '',
+		pathMatch : 'full',
+		redirectTo: 'home'
+	},
+	{
+		path: 'home',
 		component: HomePageComponent,
 	},
 	{
 		path: 'login',
 		component: LoginComponent,
-	},
+	}
 ];
 
 @NgModule({
